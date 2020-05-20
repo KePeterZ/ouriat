@@ -1,0 +1,97 @@
+:root {
+	--col1: #2182BF;
+	--col2: #F7224D;
+	--col3: #023E73;
+	--col4: #A2D4F2;
+	--col5: #052849;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	color: white;
+}
+
+body {
+	background-color: var(--col5);
+}
+
+h1.header {
+	color: white;
+	background-color: var(--col2);
+	border-bottom: 4px solid var(--col4);
+	text-shadow: 1px 1px 1px black;
+
+	text-align: center;
+	font-size: 30px;
+	padding: 20px 0px;
+}
+
+div {
+	padding-top: 1.5%;
+}
+
+div.column {
+	float: left;
+	height: calc(96.73vh - 78.65px);
+}
+
+div.left {
+	width: 20%;
+	text-align: left;
+	padding-left: 1.5%;
+	padding-right: 1.5%;
+	background-color: var(--col1);
+}
+
+div.right {
+	width: 20%;
+	text-align: right;
+	padding-right: 1.5%;
+	padding-left: 1.5%;
+	background-color: var(--col1);
+}
+
+div.center {
+	width: 51%;
+	text-align: center;
+	padding: 0px 1.5%;
+	padding-top: 1.5%;
+	
+}
+
+canvas {
+	margin: auto;
+}
+
+div h2 {
+	text-align: center;
+	color: white;
+	border-bottom: 2px solid var(--col4);
+	padding-bottom: 5px;
+	margin-bottom: 10px;
+}
+
+div.center h2 {
+	color: var(--col4)
+}
+
+div.center h1#round {
+	color: var(--col2)
+}
+
+
+div.wrapper {
+	padding: 0px;
+}
+
+div.wrapper::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+h3 {
+	margin: 10px 0px;
+}
