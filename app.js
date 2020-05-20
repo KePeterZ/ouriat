@@ -17,24 +17,29 @@ if (!fs.existsSync(logFile)) {
 }
 
 // Functions
-
 const log = async (toLog) => {
 	const data = fs.readFileSync(logFile);
 	const json = JSON.parse(data);
 	toLog.id = new Date().getTime();
 	json.push(toLog);
+	// KePeterZ helped me
 	fs.writeFileSync(logFile, JSON.stringify(json));
 };
 
+// Routes
 app.get("/getlogs", (req, res) => {
+	// KePeterZ's
 	const data = fs.readFileSync(logFile) + "";
 	res.setHeader("Content-Disposition", "attachment; filename=logs.json");
 	res.end(data);
 });
 
-// Routes
 app.get("/", (req, res) => {
 	res.render("index.ejs");
+});
+
+app.get("/github", (req, res) => {
+	res.redirect("https://github.com/KePeterZ/ouriat");
 });
 
 app.post("/uploadResults", (req, res) => {
