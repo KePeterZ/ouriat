@@ -27,7 +27,7 @@ const log = async (toLog) => {
 };
 
 app.get("/getlogs", (req, res) => {
-	log = fs.readFileSync(logFile) + "";
+	da = fs.readFileSync(logFile) + "";
 	res.setHeader("Content-Disposition", "attachment; filename=logs.json");
 	res.end(log);
 });
