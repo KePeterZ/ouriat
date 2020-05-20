@@ -26,6 +26,12 @@ const log = async (toLog) => {
 	fs.writeFileSync(logFile, JSON.stringify(json));
 };
 
+app.post("/getlogs", (req, res) => {
+	log = fs.readFileSync(logFile) + "";
+	res.setHeader("Content-Disposition", "attachment; filename=logs.json");
+	res.end(log);
+});
+
 // Routes
 app.get("/", (req, res) => {
 	res.render("index.ejs");
