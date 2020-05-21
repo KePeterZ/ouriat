@@ -27,13 +27,6 @@ const log = async (toLog) => {
 };
 
 // Routes
-app.get("/getlogs", (req, res) => {
-	// KePeterZ's
-	const data = fs.readFileSync(logFile) + "";
-	res.setHeader("Content-Disposition", "attachment; filename=logs.json");
-	res.end(data);
-});
-
 app.get("/", (req, res) => {
 	res.render("index.ejs");
 });
@@ -42,9 +35,28 @@ app.get("/github", (req, res) => {
 	res.redirect("https://github.com/KePeterZ/ouriat");
 });
 
-app.post("/uploadResults", (req, res) => {
+app.get("/results", (req, res) => {
+	// KePeterZ's
+	const data = fs.readFileSync(logFile) + "";
+	res.setHeader("Content-Disposition", "attachment; filename=logs.json");
+	res.end(data);
+});
+
+app.post("/results", (req, res) => {
 	log(req.body);
 	res.send({ status: "SUCCESS" });
+});
+
+app.delete("/results", (req, res) => {
+
+		// Send the results in response just in case
+		const data = fs.readFileSync(logFile) + "";
+
+		// Reset file
+		fs.writeFileSync(logFile, JSON.stringify([]));
+		res.setHeader("Content-Disposition", "attachment; filename=logs.json");
+		res.end(data);
+
 });
 
 app.use("*", (req, res) => {

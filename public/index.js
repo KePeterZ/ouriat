@@ -192,8 +192,91 @@ window.addEventListener("load", async () => {
 		await round.init();
 	}
 
+	// This returns the answers to the questions at the start of the test
+	const getQuestionAnswers = (() => {
+		// Checks if input is a valid gender
+		const checkGender = (input) => {
+			// If the input is null, return 0
+			if (!input) {
+				return 0;
+			}
+			switch (input.toLowerCase().trim()) {
+				case "férfi":
+				case "ferfi":
+				case "fiú":
+				case "fiu":
+				case "f":
+					return "Male";
+				case "nő":
+				case "no":
+				case "lány":
+				case "lany":
+				case "n":
+				case "l":
+					return "Female";
+				default:
+					return false;
+			}
+		};
+
+		// Checks if input is a number between 1 and 10
+		const checkNum = (input) => {
+			// Returns 0 if the input is null
+			if (!input) {
+				return 0;
+			} else if (isNaN(input.trim())) {
+				return false;
+			} else {
+				num = parseInt(input);
+				if (num > 0 && num < 11) {
+					return num;
+				}
+				return false;
+			}
+		};
+
+		let gender, prejucide;
+		do {
+			gender = prompt("Mi a nemed? Férfi/Nő");
+			returned = checkGender(gender);
+			if (returned === 0) {
+				// This will run if the user pressed cancel
+				returned = false;
+				continue;
+			} else if (returned === false) {
+				// This will run if the user didnt press cancel
+				// but typed in an invalid gender
+				alert("Csak 'Férfi'-t vagy 'Nő'-t írj be!");
+			}
+		} while (returned === false);
+		gender = returned;
+
+		do {
+			num = prompt("Mennyire tartod magad előítéletesnek egytől tízig?");
+			returned = checkNum(num);
+			if (returned === 0) {
+				// This will run if the user pressed cancel
+				returned = false;
+				continue;
+			} else if (returned === false) {
+				// This will run if the user didnt press cancel
+				// but typed in an invalid number
+				alert("Csak egy számot írj be egytől tízig!");
+			}
+		} while (returned === false);
+		// Gender is now the object where we store the inputs
+		answers = {
+			gender: gender,
+			prejucide: returned,
+		};
+
+		return () => {
+			return answers;
+		};
+	})();
+
 	const sendResults = async (result) => {
-		const url = window.location.href + "uploadResults";
+		const url = window.location.href + "results";
 
 		const h = new Headers();
 		h.append("Content-Type", "application/json");
@@ -303,8 +386,10 @@ window.addEventListener("load", async () => {
 
 					const avgTime = totalTime / count;
 					const avgCorrect = correctCount / count;
-
+					const answers = getQuestionAnswers();
 					const results = {
+						gender: answers.gender,
+						prejucide: answers.prejucide,
 						totalTime: totalTime,
 						avgTime: avgTime,
 						avgCorrect: avgCorrect,
