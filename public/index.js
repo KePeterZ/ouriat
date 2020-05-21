@@ -76,6 +76,16 @@ window.addEventListener("load", async () => {
 		};
 	})();
 
+	const roundAndStr = (toRound, precision = 2, toString = true) => {
+		toRound /= 1000;
+		const pow = Math.pow(10, precision);
+		toRound = Math.round(toRound * pow) / pow;
+		if (toString) {
+			return toRound.toString();
+		}
+		return toRound;
+	};
+
 	// Updates the text on the left and right side of the window
 	const updateRound = (() => {
 		const left = document.getElementById("left");
@@ -85,11 +95,22 @@ window.addEventListener("load", async () => {
 		const canvas = document.getElementById("imagePlaceholder");
 		const head = document.getElementById("head");
 
-		return (round, showResults) => {
-			if (showResults) {
+		// For showing results
+		const resultsElem = document.getElementById("results");
+		const totalTime = document.getElementById("totalTime");
+		const avgTime = document.getElementById("avgTime");
+		const avgCorrect = document.getElementById("avgCorrect");
+
+		return (round, results) => {
+			if (results) {
 				canvas.style.display = "none";
 				infoBox.style.display = "none";
 				head.innerHTML = "Eredmények";
+				resultsElem.style.display = "block";
+				totalTime.innerHTML = roundAndStr(results.totalTime) + " mp";
+				avgTime.innerHTML = roundAndStr(results.avgTime) + " mp";
+				avgCorrect.innerHTML =
+					(Math.round(results.avgCorrect * 1000) / 10).toString() + "%";
 			} else if (round) {
 				left.innerHTML = round.left;
 				right.innerHTML = round.right;

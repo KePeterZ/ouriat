@@ -17,10 +17,19 @@
 		</div>
 		<div class="column center">
 			<h2 id="head">Válaszolj minél gyorsabban a nyilakkal</h2>
-			<div id="roundInfo">
+			<div id="roundInfo" style="display: none;">
 				<h1 id="round">1. Kör</h1>
 				<h3>A balra és jobbra nyilakkal döntsd el minél gyorsabban,<br>hogy az adott kép melyik csoportba tartozik!</h3>
 				<h2 style="border-bottom: none;">Nyomj meg egy billentyűt a folytatáshoz</h2>
+			</div>
+			<div id="results" style="display: none">
+				<h2 style="border-bottom: none;">Összidő:</h1>
+				<h3 id="totalTime"></h3>
+				<h2 style="border-bottom: none;">Átlagos válaszidő:</h1>
+				<h3 id="avgTime"></h3>
+				<h2 style="border-bottom: none;">Átlagos helyesség:</h2>
+				<h3 id="avgCorrect"></h3>
+				<h1>Köszönjük, hogy kitöltötted a tesztet!</h1>
 			</div>
 			
 			<canvas id="imagePlaceholder" style="display: none"></canvas>
