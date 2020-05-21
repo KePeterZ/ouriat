@@ -56,8 +56,12 @@ window.addEventListener("load", async () => {
 		// Setting up canvas
 		const canvas = document.getElementById("imagePlaceholder");
 		const ctx = canvas.getContext("2d");
-		canvas.height = 400;
+
+		// The canvas width height is 400 px
 		canvas.width = 400;
+		canvas.height = 400;
+		canvas.style.height = "30vw";
+		canvas.style.width = "30vw";
 
 		return (imageSrc) => {
 			ctx.fillStyle = "#fff";
