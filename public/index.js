@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 		return shuffle(imageObjects, 3); // Return the shuffled array
 	};
 
-	// Clears the canvas and draws the image
+	// Clears the canvas and draws the image or text
 	const displayImage = (() => {
 		// Setting up canvas
 		const canvas = document.getElementById("imagePlaceholder");
