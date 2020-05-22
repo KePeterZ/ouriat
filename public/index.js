@@ -30,11 +30,38 @@ window.addEventListener("load", async () => {
 		return array;
 	};
 
-	const generateImages = async (typesToLoad) => {
-		// Get all the images of all the types
+	const words = {
+		roma: ["Ármándó", "Győzike", "Julió", "Tícián", "Dzsennifer", "Lakatos"],
+		nemroma: ["Júlia", "Eszter", "Péter", "Artúr", "Kovács", "Béla"],
+		kellemes: [
+			"boldogság",
+			"élvezet",
+			"szerelem",
+			"béke",
+			"csodálatos",
+			"nevetés",
+		],
+		kellemetlen: [
+			"gyötrődés",
+			"rettenetes",
+			"gonosz",
+			"borzasztó",
+			"szörnyű",
+			"undok",
+		],
+	};
+
+	const generateContent = async (typesToLoad, isImage = true) => {
 		let imageArray = new Array(typesToLoad.length);
-		for (let i = 0; i < typesToLoad.length; i++) {
-			imageArray[i] = await loadImageType(typesToLoad[i]);
+		if (isImage) {
+			// Get all the images of all the types
+			for (let i = 0; i < typesToLoad.length; i++) {
+				imageArray[i] = await loadImageType(typesToLoad[i]);
+			}
+		} else {
+			for (let i = 0; i < typesToLoad.length; i++) {
+				imageArray[i] = words[typesToLoad[i]];
+			}
 		}
 
 		// Make every element into an object that has the type of
@@ -44,39 +71,50 @@ window.addEventListener("load", async () => {
 			for (let j = 0; j < 6; j++) {
 				let object = {};
 				object.type = typesToLoad[i];
+				object.isImage = isImage;
 				object.src = imageArray[i][j];
+
 				imageObjects[i * 6 + j] = object;
 			}
 		}
 		return shuffle(imageObjects, 3); // Return the shuffled array
 	};
 
-	// Clears the canvas and draws the image
+	// Clears the canvas and draws the image or text
 	const displayImage = (() => {
 		// Setting up canvas
 		const canvas = document.getElementById("imagePlaceholder");
 		const ctx = canvas.getContext("2d");
+		const wordPlaceholder = document.getElementById("wordPlaceholder");
 
 		// The canvas width height is 400 px
-		canvas.width = 400;
-		canvas.height = 400;
+		canvas.width = 800;
+		canvas.height = 800;
 		canvas.style.height = "30vw";
 		canvas.style.width = "30vw";
 
-		return (imageSrc) => {
-			ctx.fillStyle = "#fff";
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-			ctx.drawImage(
-				imageSrc,
-				0,
-				0,
-				imageSrc.width,
-				imageSrc.height,
-				0,
-				0,
-				canvas.width,
-				canvas.height
-			);
+		return (image) => {
+			if (image.isImage) {
+				wordPlaceholder.style.display = "none";
+				canvas.style.display = "block";
+				ctx.fillStyle = "#fff";
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				ctx.drawImage(
+					image.src,
+					0,
+					0,
+					image.src.width,
+					image.src.height,
+					0,
+					0,
+					canvas.width,
+					canvas.height
+				);
+			} else {
+				canvas.style.display = "none";
+				wordPlaceholder.style.display = "block";
+				wordPlaceholder.innerHTML = image.src;
+			}
 		};
 	})();
 
@@ -97,6 +135,7 @@ window.addEventListener("load", async () => {
 		const infoBox = document.getElementById("roundInfo");
 		const roundDisplay = document.getElementById("round");
 		const canvas = document.getElementById("imagePlaceholder");
+		const wordPlaceholder = document.getElementById("wordPlaceholder");
 		const head = document.getElementById("head");
 
 		// For showing results
@@ -108,6 +147,7 @@ window.addEventListener("load", async () => {
 		return (round, results) => {
 			if (results) {
 				canvas.style.display = "none";
+				wordPlaceholder.style.display = "none";
 				infoBox.style.display = "none";
 				head.innerHTML = "Eredmények";
 				resultsElem.style.display = "block";
@@ -119,72 +159,86 @@ window.addEventListener("load", async () => {
 				left.innerHTML = round.left;
 				right.innerHTML = round.right;
 				canvas.style.display = "none";
+				wordPlaceholder.style.display = "none";
 				roundDisplay.innerHTML = `${rounds.indexOf(round) + 1}. Kör`;
 				infoBox.style.display = "block";
 			} else {
 				infoBox.style.display = "none";
-				canvas.style.display = "block";
 			}
 		};
 	})();
 
 	const rounds = [
 		{
-			left: "Cigány",
-			right: "Fehér",
+			left: "Roma",
+			right: "Nem roma",
 			leftRaws: ["roma"],
-			rightRaws: ["feher"],
+			rightRaws: ["nemroma"],
 			init: async function () {
-				this.images = await generateImages(
+				this.images = await generateContent(
 					this.leftRaws.concat(this.rightRaws)
 				);
 				this.results = new Array(this.images.length);
 			},
 		},
 		{
-			left: "Bogár",
-			right: "Cuki",
-			leftRaws: ["bogar"],
-			rightRaws: ["cuki"],
+			left: "Kellemes",
+			right: "Kellemetlen",
+			leftRaws: ["kellemes"],
+			rightRaws: ["kellemetlen"],
 			init: async function () {
-				this.images = await generateImages(
+				this.images = await generateContent(
 					this.leftRaws.concat(this.rightRaws)
 				);
 				this.results = new Array(this.images.length);
 			},
 		},
 		{
-			left: "Cigány<br>Cuki",
-			right: "Fehér<br>Bogár",
-			leftRaws: ["roma", "cuki"],
-			rightRaws: ["feher", "bogar"],
+			left: "Roma<br>Kellemes",
+			right: "Nem roma<br>Kellemetlen",
+			leftRaws: ["roma", "kellemes"],
+			rightRaws: ["nemroma", "kellemetlen"],
 			init: async function () {
-				this.images = await generateImages(
+				this.images = await generateContent(
 					this.leftRaws.concat(this.rightRaws)
 				);
 				this.results = new Array(this.images.length);
 			},
 		},
 		{
-			left: "Fehér",
-			right: "Fekete",
-			leftRaws: ["roma"],
-			rightRaws: ["feher"],
+			left: "Nem roma",
+			right: "Roma",
+			leftRaws: ["nemroma"],
+			rightRaws: ["roma"],
 			init: async function () {
-				this.images = await generateImages(
+				this.images = await generateContent(
+					this.leftRaws.concat(this.rightRaws),
+					false
+				);
+				this.results = new Array(this.images.length);
+			},
+		},
+		{
+			left: "Kellemes<br>Nem roma",
+			right: "Kellemetlen<br>Roma",
+			leftRaws: ["kellemes", "nemroma"],
+			rightRaws: ["kellemetlen", "roma"],
+			init: async function () {
+				this.images = await generateContent(
 					this.leftRaws.concat(this.rightRaws)
 				);
 				this.results = new Array(this.images.length);
 			},
 		},
 		{
-			left: "Cuki<br>Fehér",
-			right: "Cigány<br>Bogár",
-			leftRaws: ["cuki", "feher"],
-			rightRaws: ["roma", "bogar"],
+			left: "Kellemes<br>Roma",
+			right: "Kellemetlen<br>Nem roma",
+			leftRaws: ["kellemes"],
+			rightRaws: ["kellemetlen"],
 			init: async function () {
-				this.images = await generateImages(
-					this.leftRaws.concat(this.rightRaws)
+				this.images = await generateContent(
+					this.leftRaws.concat(this.rightRaws),
+					false
 				);
 				this.results = new Array(this.images.length);
 			},
@@ -336,14 +390,14 @@ window.addEventListener("load", async () => {
 
 		return (keyCode) => {
 			// Only register if test is not over
-			if (roundIndex < 5) {
+			if (roundIndex < rounds.length) {
 				if (imageIndex === 0) {
 					// If the first image, then hide the text and display image
 					updateRound();
 					imageIndex++;
 
 					// Displaying the next image and starting timer
-					displayImage(currendRound.images[imageIndex - 1].src);
+					displayImage(currendRound.images[imageIndex - 1]);
 					startTime = window.performance.now();
 				} else {
 					// If not the first image
@@ -367,7 +421,7 @@ window.addEventListener("load", async () => {
 							updateRound(currendRound);
 						} else {
 							// If round is note over, display the image and start timer
-							displayImage(currendRound.images[imageIndex - 1].src);
+							displayImage(currendRound.images[imageIndex - 1]);
 							startTime = window.performance.now();
 						}
 					}
