@@ -127,6 +127,7 @@ window.addEventListener("load", async () => {
 			}
 		};
 	})();
+	
 	const rounds = [
 		{
 			left: "Cigány",
