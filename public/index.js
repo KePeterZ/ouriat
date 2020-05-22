@@ -1,4 +1,4 @@
-// Only start when window is loaded.
+// Only start when window is loaded
 window.addEventListener("load", async () => {
 	// Loads an image, returns a promise
 	const loadImage = (src) => {
@@ -33,6 +33,22 @@ window.addEventListener("load", async () => {
 	const words = {
 		roma: ["Ármándó", "Győzike", "Julió", "Tícián", "Dzsennifer", "Lakatos"],
 		nemroma: ["Júlia", "Eszter", "Péter", "Artúr", "Kovács", "Béla"],
+		kellemes: [
+			"boldogság",
+			"élvezet",
+			"szerelem",
+			"béke",
+			"csodálatos",
+			"nevetés",
+		],
+		kellemetlen: [
+			"gyötrődés",
+			"rettenetes",
+			"gonosz",
+			"borzasztó",
+			"szörnyű",
+			"undok",
+		],
 	};
 
 	const generateContent = async (typesToLoad, isImage = true) => {
@@ -214,6 +230,19 @@ window.addEventListener("load", async () => {
 				this.results = new Array(this.images.length);
 			},
 		},
+		{
+			left: "Kellemes<br>Roma",
+			right: "Kellemetlen<br>Nem roma",
+			leftRaws: ["kellemes"],
+			rightRaws: ["kellemetlen"],
+			init: async function () {
+				this.images = await generateContent(
+					this.leftRaws.concat(this.rightRaws),
+					false
+				);
+				this.results = new Array(this.images.length);
+			},
+		},
 	];
 
 	// Initialize the results of each round
@@ -361,7 +390,7 @@ window.addEventListener("load", async () => {
 
 		return (keyCode) => {
 			// Only register if test is not over
-			if (roundIndex < 5) {
+			if (roundIndex < rounds.length) {
 				if (imageIndex === 0) {
 					// If the first image, then hide the text and display image
 					updateRound();
