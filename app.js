@@ -23,7 +23,7 @@ if (!fs.existsSync(logFile)) {
 const log = async (toLog) => {
 	const data = fs.readFileSync(logFile);
 	const json = JSON.parse(data);
-	toLog.id = new Date().getTime();
+	toLog.time = new Date().getTime();
 	json.push(toLog);
 	// KePeterZ helped me
 	fs.writeFileSync(logFile, JSON.stringify(json));
