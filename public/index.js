@@ -280,7 +280,7 @@ window.addEventListener("load", async () => {
 	})();
 
 	const sendResults = async (result) => {
-		const url = window.location.href + "results";
+		const url = window.location.href + "resultsdb";
 
 		const h = new Headers();
 		h.append("Content-Type", "application/json");
