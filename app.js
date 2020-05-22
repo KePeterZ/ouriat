@@ -30,7 +30,7 @@ const log = async (toLog) => {
 };
 
 function addResult(thing) {
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(dbUrl, function(err, db) {
     if (err) throw err;
     db.db("heroku_5c8pg0cp").collection("iat").insertOne(thing, function(err, res) {
       if (err) throw err;
