@@ -63,7 +63,9 @@ app.post("/results", (req, res) => {
 });
 
 app.post("/resultsdb", (req, res) => {
-	addResult(req.body)
+	baseJson = JSON.parse(req.body)
+	baseJson.id = new Date().getTime();
+	addResult(baseJson)
 	res.send({ status: "SUCCESS" });
 });
 
