@@ -1,1 +1,32 @@
-[{"gender":"Male","prejucide":3,"totalTime":3208.3300004014745,"avgTime":38.19440476668422,"avgCorrect":0.5,"id":1590067562924}]
+{
+	"avgPrejucide": 5,
+	"avgTotalTime": 5979.43333342361,
+	"avgAvgTime": 71.18373015980488,
+	"avgAvgCorrect": 0.5238095238095238,
+	"results": [
+		{
+			"gender": "Male",
+			"prejucide": 2,
+			"totalTime": 3215.5299996957183,
+			"avgTime": 38.28011904399665,
+			"avgCorrect": 0.5,
+			"id": 1590139521821
+		},
+		{
+			"gender": "Female",
+			"prejucide": 10,
+			"totalTime": 11496.00500066299,
+			"avgTime": 136.8572023888451,
+			"avgCorrect": 0.5714285714285714,
+			"id": 1590139605740
+		},
+		{
+			"gender": "Female",
+			"prejucide": 3,
+			"totalTime": 3226.7649999121204,
+			"avgTime": 38.41386904657286,
+			"avgCorrect": 0.5,
+			"id": 1590140093003
+		}
+	]
+}

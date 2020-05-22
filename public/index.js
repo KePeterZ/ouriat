@@ -58,8 +58,8 @@ window.addEventListener("load", async () => {
 		const ctx = canvas.getContext("2d");
 
 		// The canvas width height is 400 px
-		canvas.width = 400;
-		canvas.height = 400;
+		canvas.width = 800;
+		canvas.height = 800;
 		canvas.style.height = "30vw";
 		canvas.style.width = "30vw";
 

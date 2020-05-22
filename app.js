@@ -21,7 +21,21 @@ const log = async (toLog) => {
 	const data = fs.readFileSync(logFile);
 	const json = JSON.parse(data);
 	toLog.id = new Date().getTime();
-	json.push(toLog);
+	json.results.push(toLog);
+
+	// Creating avarages
+	let avgPrejucide = (avgTotalTime = avgAvgTime = avgAvgCorrect = 0);
+	json.results.forEach((result) => {
+		avgPrejucide += result.prejucide;
+		avgTotalTime += result.totalTime;
+		avgAvgTime += result.avgTime;
+		avgAvgCorrect += result.avgCorrect;
+	});
+	json.avgPrejucide = avgPrejucide / json.results.length;
+	json.avgTotalTime = avgTotalTime / json.results.length;
+	json.avgAvgTime = avgAvgTime / json.results.length;
+	json.avgAvgCorrect = avgAvgCorrect / json.results.length;
+
 	// KePeterZ helped me
 	fs.writeFileSync(logFile, JSON.stringify(json));
 };
@@ -48,15 +62,13 @@ app.post("/results", (req, res) => {
 });
 
 app.delete("/results", (req, res) => {
+	// Send the results in response just in case
+	const data = fs.readFileSync(logFile) + "";
 
-		// Send the results in response just in case
-		const data = fs.readFileSync(logFile) + "";
-
-		// Reset file
-		fs.writeFileSync(logFile, JSON.stringify([]));
-		res.setHeader("Content-Disposition", "attachment; filename=logs.json");
-		res.end(data);
-
+	// Reset file
+	fs.writeFileSync(logFile, JSON.stringify([]));
+	res.setHeader("Content-Disposition", "attachment; filename=logs.json");
+	res.end(data);
 });
 
 app.use("*", (req, res) => {
