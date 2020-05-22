@@ -1,3 +1,4 @@
+const MongoClient = require("mongodb").MongoClient;
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -5,6 +6,7 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 const logFile = __dirname + "/logs.json";
+const dbUrl = "mongodb://iat:abc123@ds029798.mlab.com:29798/heroku_5c8pg0cp";
 
 // Middleware
 app.set("view engine", "ejs");
@@ -20,25 +22,26 @@ if (!fs.existsSync(logFile)) {
 const log = async (toLog) => {
 	const data = fs.readFileSync(logFile);
 	const json = JSON.parse(data);
-	toLog.id = new Date().getTime();
-	json.results.push(toLog);
 
-	// Creating avarages
-	let avgPrejucide = (avgTotalTime = avgAvgTime = avgAvgCorrect = 0);
-	json.results.forEach((result) => {
-		avgPrejucide += result.prejucide;
-		avgTotalTime += result.totalTime;
-		avgAvgTime += result.avgTime;
-		avgAvgCorrect += result.avgCorrect;
-	});
-	json.avgPrejucide = avgPrejucide / json.results.length;
-	json.avgTotalTime = avgTotalTime / json.results.length;
-	json.avgAvgTime = avgAvgTime / json.results.length;
-	json.avgAvgCorrect = avgAvgCorrect / json.results.length;
+	toLog.time = new Date().getTime();
+	json.push(toLog);
 
 	// KePeterZ helped me
 	fs.writeFileSync(logFile, JSON.stringify(json));
 };
+
+function addResult(thing) {
+	MongoClient.connect(dbUrl, function (err, db) {
+		if (err) throw err;
+		db.db("heroku_5c8pg0cp")
+			.collection("iat")
+			.insertOne(thing, function (err, res) {
+				if (err) throw err;
+				console.log("1 document inserted");
+				db.close();
+			});
+	});
+}
 
 // Routes
 app.get("/", (req, res) => {
@@ -58,6 +61,13 @@ app.get("/results", (req, res) => {
 
 app.post("/results", (req, res) => {
 	log(req.body);
+	res.send({ status: "SUCCESS" });
+});
+
+app.post("/resultsdb", (req, res) => {
+	baseJson = req.body;
+	baseJson.id = new Date().getTime();
+	addResult(baseJson);
 	res.send({ status: "SUCCESS" });
 });
 
