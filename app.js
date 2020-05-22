@@ -1,3 +1,4 @@
+const MongoClient = require('mongodb').MongoClient;
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -5,6 +6,8 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 const logFile = __dirname + "/logs.json";
+const dbUrl = "mongodb://iat:abc123@ds029798.mlab.com:29798/heroku_5c8pg0cp";
+
 
 // Middleware
 app.set("view engine", "ejs");
@@ -25,6 +28,18 @@ const log = async (toLog) => {
 	// KePeterZ helped me
 	fs.writeFileSync(logFile, JSON.stringify(json));
 };
+
+function addResult(thing) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    db.db("heroku_5c8pg0cp").collection("iat").insertOne(thing, function(err, res) {
+      if (err) throw err;
+      console.log("1 document inserted");
+      db.close();
+    });
+  });
+}
+
 
 // Routes
 app.get("/", (req, res) => {
