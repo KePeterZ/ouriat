@@ -1,4 +1,4 @@
-// Only start when window is loaded
+// Only start when window is loaded.
 window.addEventListener("load", async () => {
 	// Loads an image, returns a promise
 	const loadImage = (src) => {
