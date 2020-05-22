@@ -40,6 +40,23 @@ app.post("/results", (req, res) => {
 	res.send({ status: "SUCCESS" });
 });
 
+app.post("/resultsdb", (req, res) => {
+	addResult(req.body)
+	res.send({ status: "SUCCESS" });
+});
+
+app.delete("/results", (req, res) => {
+
+		// Send the results in response just in case
+		const data = fs.readFileSync(logFile) + "";
+
+		// Reset file
+		fs.writeFileSync(logFile, JSON.stringify([]));
+		res.setHeader("Content-Disposition", "attachment; filename=logs.json");
+		res.end(data);
+
+});
+
 app.use("*", (req, res) => {
 	res.redirect("/");
 });
