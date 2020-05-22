@@ -62,6 +62,11 @@ app.post("/results", (req, res) => {
 	res.send({ status: "SUCCESS" });
 });
 
+app.post("/resultsdb", (req, res) => {
+	addResult(req.body)
+	res.send({ status: "SUCCESS" });
+});
+
 app.delete("/results", (req, res) => {
 
 		// Send the results in response just in case
