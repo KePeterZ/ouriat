@@ -12,6 +12,7 @@ window.addEventListener("load", async () => {
 
 	// Loads all the images of the given type
 	const loadImageType = async (type) => {
+		console.log("Loading image type " + type);
 		let images = new Array(6);
 		for (var i = 0; i < 6; i++) {
 			images[i] = loadImage(`./images/${type}/${i + 1}.png`);
