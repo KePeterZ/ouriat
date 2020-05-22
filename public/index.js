@@ -127,13 +127,12 @@ window.addEventListener("load", async () => {
 			}
 		};
 	})();
-
 	const rounds = [
 		{
 			left: "Cigány",
 			right: "Fehér",
 			leftRaws: ["roma"],
-			rightRaws: ["feher"],
+			rightRaws: ["nemroma"],
 			init: async function () {
 				this.images = await generateImages(
 					this.leftRaws.concat(this.rightRaws)
@@ -142,10 +141,10 @@ window.addEventListener("load", async () => {
 			},
 		},
 		{
-			left: "Bogár",
-			right: "Cuki",
-			leftRaws: ["bogar"],
-			rightRaws: ["cuki"],
+			left: "Kellemes",
+			right: "Kellemetlen",
+			leftRaws: ["kellemes"],
+			rightRaws: ["kellemetlen"],
 			init: async function () {
 				this.images = await generateImages(
 					this.leftRaws.concat(this.rightRaws)
@@ -154,10 +153,10 @@ window.addEventListener("load", async () => {
 			},
 		},
 		{
-			left: "Cigány<br>Cuki",
-			right: "Fehér<br>Bogár",
-			leftRaws: ["roma", "cuki"],
-			rightRaws: ["feher", "bogar"],
+			left: "Cigány<br>Kellemes",
+			right: "Fehér<br>Kellemetlen",
+			leftRaws: ["roma", "kellemes"],
+			rightRaws: ["nemroma", "kellemetlen"],
 			init: async function () {
 				this.images = await generateImages(
 					this.leftRaws.concat(this.rightRaws)
@@ -168,8 +167,8 @@ window.addEventListener("load", async () => {
 		{
 			left: "Fehér",
 			right: "Fekete",
-			leftRaws: ["roma"],
-			rightRaws: ["feher"],
+			leftRaws: ["nemroma", "kellemes"],
+			rightRaws: ["roma", "kellemetlen"],
 			init: async function () {
 				this.images = await generateImages(
 					this.leftRaws.concat(this.rightRaws)
@@ -178,10 +177,10 @@ window.addEventListener("load", async () => {
 			},
 		},
 		{
-			left: "Cuki<br>Fehér",
-			right: "Cigány<br>Bogár",
-			leftRaws: ["cuki", "feher"],
-			rightRaws: ["roma", "bogar"],
+			left: "Kellemes<br>Fehér",
+			right: "Kellemetlen<br>Cigány",
+			leftRaws: ["kellemes", "nemroma"],
+			rightRaws: ["kellemetlen", "roma"],
 			init: async function () {
 				this.images = await generateImages(
 					this.leftRaws.concat(this.rightRaws)
@@ -280,7 +279,7 @@ window.addEventListener("load", async () => {
 	})();
 
 	const sendResults = async (result) => {
-		const url = window.location.href + "resultsdb";
+		const url = window.location.href + "results";
 
 		const h = new Headers();
 		h.append("Content-Type", "application/json");
